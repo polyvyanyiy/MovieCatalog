@@ -48,7 +48,7 @@ final class HomeViewModel {
     init(networkService: NetworkServiceProtocol = MockNetworkService()) {
         self.networkService = networkService
     }
-
+    
     @MainActor
     func loadNextPage() async {
         guard !isLoading && !isLastPage else { return }
@@ -90,12 +90,12 @@ final class HomeViewModel {
         isLoading = false
     }
     
-        @MainActor
-        func clearSearch() async {
-            searchText = ""
-            movies = []
-            currentPage = 1
-            isLastPage = false
-            await loadNextPage()
-        }
+    @MainActor
+    func clearSearch() async {
+        searchText = ""
+        movies = []
+        currentPage = 1
+        isLastPage = false
+        await loadNextPage()
+    }
 }

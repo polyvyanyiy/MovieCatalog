@@ -34,66 +34,69 @@ struct HomeView: View {
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(spacing: 0) {
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        HStack(spacing: 8) {
-                            ForEach(MovieSortOption.allCases) { option in
-                                Button(action: {
-                                    withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
-                                        viewModel.selectedSortOption = option
-                                    }
-                                }) {
-                                    Text(option.rawValue)
-                                        .font(.subheadline)
-                                        .bold(viewModel.selectedSortOption == option)
-                                        .padding(.horizontal, 14)
-                                        .padding(.vertical, 8)
-                                        // Подсветка активного фильтра
-                                        .background(viewModel.selectedSortOption == option ? Color.blue : Color(.systemGray6))
-                                        .foregroundColor(viewModel.selectedSortOption == option ? .white : .primary)
-                                        .cornerRadius(20)
+            VStack(spacing: 0) {
+                ScrollView(.horizontal, showsIndicators: false) {
+                    HStack(spacing: 8) {
+                        ForEach(MovieSortOption.allCases) { option in
+                            Button(action: {
+                                withAnimation(.spring(response: 0.3, dampingFraction: 0.7)) {
+                                    viewModel.selectedSortOption = option
                                 }
+                            }) {
+                                Text(option.rawValue)
+                                    .font(.subheadline)
+                                    .bold(viewModel.selectedSortOption == option)
+                                    .padding(.horizontal, 14)
+                                    .padding(.vertical, 8)
+                                    .background(viewModel.selectedSortOption == option ? Color.blue : Color(.systemGray6))
+                                    .foregroundColor(viewModel.selectedSortOption == option ? .white : .primary)
+                                    .cornerRadius(20)
                             }
+                            .buttonStyle(.plain)
                         }
-                        .padding(.horizontal, 16)
-                        .padding(.vertical, 10)
                     }
-                    .background(Color(.systemBackground))
-                    
-                    // Сетка фильмов
-                    if viewModel.isLoading && viewModel.movies.isEmpty {
-                        // Мерцание
-                        LazyVGrid(columns: columns, spacing: 16) {
-                            ForEach(0..<6, id: \.self) { _ in
-                                MovieGridSkeleton()
-                            }
-                        }
-                        .padding()
-                    } else {
-                        // Подгрузка
-                        LazyVGrid(columns: columns, spacing: 16) {
-                            ForEach(viewModel.sortedMovies) { movie in
-                                NavigationLink(value: movie) {
-                                    // Передаем динамическую высоту в ячейку
-                                    MovieGridCell(movie: movie, height: cellHeight)
-                                }
-                                .buttonStyle(.plain)
-                                .onAppear {
-                                    if movie == viewModel.movies.last {
-                                        Task { await viewModel.loadNextPage() }
-                                    }
-                                }
-                            }
-                        }
-                        .padding()
-                        .animation(.spring(response: 0.4, dampingFraction: 0.8), value: gridColumnsCount)
-                    }
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 10)
                 }
+                .background(Color(.systemBackground))
                 
-                if viewModel.isLoading && !viewModel.movies.isEmpty {
-                    ProgressView()
-                        .padding()
+                Divider()
+                
+                ScrollView {
+                    VStack(spacing: 0) {
+                        // Сетка фильмов
+                        if viewModel.isLoading && viewModel.movies.isEmpty {
+                            // Мерцание
+                            LazyVGrid(columns: columns, spacing: 16) {
+                                ForEach(0..<6, id: \.self) { _ in
+                                    MovieGridSkeleton()
+                                }
+                            }
+                            .padding()
+                        } else {
+                            // Подгрузка
+                            LazyVGrid(columns: columns, spacing: 16) {
+                                ForEach(viewModel.sortedMovies) { movie in
+                                    NavigationLink(value: movie) {
+                                        MovieGridCell(movie: movie, height: cellHeight)
+                                    }
+                                    .buttonStyle(.plain)
+                                    .onAppear {
+                                        if movie == viewModel.movies.last {
+                                            Task { await viewModel.loadNextPage() }
+                                        }
+                                    }
+                                }
+                            }
+                            .padding()
+                            .animation(.spring(response: 0.4, dampingFraction: 0.8), value: viewModel.selectedSortOption)
+                        }
+                    }
+                    
+                    if viewModel.isLoading && !viewModel.movies.isEmpty {
+                        ProgressView()
+                            .padding()
+                    }
                 }
             }
             .navigationTitle("Главная")
@@ -113,9 +116,10 @@ struct HomeView: View {
             .task {
                 await viewModel.loadNextPage()
             }
-            .preferredColorScheme(selectedColorScheme) 
+            .preferredColorScheme(selectedColorScheme)
         }
     }
+
 }
 
 // Обновленная ячейка с поддержкой динамической высоты
