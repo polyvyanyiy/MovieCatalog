@@ -100,7 +100,11 @@ struct HomeView: View {
                 }
             }
             .navigationTitle("Главная")
-            .searchable(text: $viewModel.searchText, prompt: "Поиск фильмов")
+            .searchable(
+                text: $viewModel.searchText,
+                placement: .navigationBarDrawer(displayMode: .always), 
+                prompt: "Поиск фильмов"
+            )
             .onChange(of: viewModel.searchText) { _, newValue in
                 Task {
                     if newValue.isEmpty {
