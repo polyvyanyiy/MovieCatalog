@@ -38,4 +38,4 @@ UserDefaults (через @AppStorage): Системное постоянное �
 
 GIF-демонстрация:
 
-
+<img width="320" height="640" alt="GitProgram" src="https://github.com/user-attachments/assets/a05d100e-7521-45db-959c-192ade5ed2cd" />
