@@ -1,0 +1,30 @@
+{
+  "total": 3,
+  "totalPages": 1,
+  "items": [
+    {
+      "kinopoiskId": 326,
+      "nameRu": "Побег из Шоушенка",
+      "description": "Бухгалтер Энди Дюфрейн обвинен в убийстве собственной жены и ее любовника. Попав в тюрьму Шоушенк, он сталкивается с жестокостью и беззаконием.",
+      "posterUrlPreview": "https://wikimedia.org",
+      "year": "1994",
+      "ratingKinopoisk": 9.1
+    },
+    {
+      "kinopoiskId": 3498,
+      "nameRu": "Зеленая миля",
+      "description": "В тюрьме для смертников появляется огромный чернокожий мужчина, обладающий божественным даром исцеления.",
+      "posterUrlPreview": "https://wikimedia.org",
+      "year": "1999",
+      "ratingKinopoisk": 9.1
+    },
+    {
+      "kinopoiskId": 41519,
+      "nameRu": "Брат",
+      "description": "Демобилизованный из армии Данила Багров возвращается в родной городок. Но скучная жизнь провинции не устраивает его, и он едет в Петербург.",
+      "posterUrlPreview": "https://wikimedia.org",
+      "year": "1997",
+      "ratingKinopoisk": 8.3
+    }
+  ]
+}
